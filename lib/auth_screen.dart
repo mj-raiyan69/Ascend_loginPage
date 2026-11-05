@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:login_project/widgets/custom_inputfield.dart';
+import 'app_theme.dart';
+
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
@@ -9,7 +11,6 @@ class AuthScreen extends StatefulWidget {
 }
 
 class _AuthScreenState extends State<AuthScreen> {
-  // Simple form key for validation
   final _formKey = GlobalKey<FormState>();
 
   // Toggle between Login (true) and Register (false)
@@ -34,7 +35,6 @@ class _AuthScreenState extends State<AuthScreen> {
     super.dispose();
   }
 
-  // Handle form submission
   void _submitForm() {
     if (_formKey.currentState!.validate()) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -93,15 +93,7 @@ class _AuthScreenState extends State<AuthScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'ASCEND',
-          style: GoogleFonts.barlowCondensed(
-            fontSize: 48,
-            fontWeight: FontWeight.w900,
-            color: const Color(0xFFC9A84C),
-            letterSpacing: 1.5,
-          ),
-        ),
+        Text('ASCEND', style: AppTheme.titleStyle),
         const SizedBox(height: 8),
         Text(
           isLoginMode
@@ -109,7 +101,7 @@ class _AuthScreenState extends State<AuthScreen> {
               : 'Create an account to start your journey.',
           style: const TextStyle(
             fontSize: 14,
-            color: Colors.grey,
+            color: AppTheme.textGrey,
           ),
         ),
       ],
@@ -122,17 +114,12 @@ class _AuthScreenState extends State<AuthScreen> {
   Widget _buildInputFieldsSection() {
     return Column(
       children: [
-        // Name field (Only shown during Registration)
+        // Name Field (Only shown in Register mode)
         if (!isLoginMode) ...[
-          TextFormField(
+          CustomInputField(
             controller: _nameController,
-            decoration: InputDecoration(
-              labelText: 'Full Name',
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-              prefixIcon: const Icon(Icons.person_outline),
-            ),
+            labelText: 'Full Name',
+            icon: Icons.person_outline,
             validator: (value) {
               if (value == null || value.trim().isEmpty) {
                 return 'Please enter your name';
@@ -144,16 +131,11 @@ class _AuthScreenState extends State<AuthScreen> {
         ],
 
         // Email Field
-        TextFormField(
+        CustomInputField(
           controller: _emailController,
+          labelText: 'Email Address',
+          icon: Icons.email_outlined,
           keyboardType: TextInputType.emailAddress,
-          decoration: InputDecoration(
-            labelText: 'Email Address',
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
-            ),
-            prefixIcon: const Icon(Icons.email_outlined),
-          ),
           validator: (value) {
             if (value == null || value.trim().isEmpty) {
               return 'Please enter your email';
@@ -167,16 +149,11 @@ class _AuthScreenState extends State<AuthScreen> {
         const SizedBox(height: 16),
 
         // Password Field
-        TextFormField(
+        CustomInputField(
           controller: _passwordController,
-          obscureText: true,
-          decoration: InputDecoration(
-            labelText: 'Password',
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
-            ),
-            prefixIcon: const Icon(Icons.lock_outline),
-          ),
+          labelText: 'Password',
+          icon: Icons.lock_outline,
+          isPassword: true,
           validator: (value) {
             if (value == null || value.isEmpty) {
               return 'Please enter your password';
@@ -188,19 +165,14 @@ class _AuthScreenState extends State<AuthScreen> {
           },
         ),
 
-        // Confirm Password Field (Only shown during Registration)
+        // Confirm Password Field (Only shown in Register mode)
         if (!isLoginMode) ...[
           const SizedBox(height: 16),
-          TextFormField(
+          CustomInputField(
             controller: _confirmPasswordController,
-            obscureText: true,
-            decoration: InputDecoration(
-              labelText: 'Confirm Password',
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-              prefixIcon: const Icon(Icons.lock_reset_outlined),
-            ),
+            labelText: 'Confirm Password',
+            icon: Icons.lock_reset_outlined,
+            isPassword: true,
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Please confirm your password';
@@ -223,7 +195,7 @@ class _AuthScreenState extends State<AuthScreen> {
     return ElevatedButton(
       onPressed: _submitForm,
       style: ElevatedButton.styleFrom(
-        backgroundColor: const Color(0xFFC9A84C),
+        backgroundColor: AppTheme.gold,
         foregroundColor: Colors.black,
         padding: const EdgeInsets.symmetric(vertical: 16),
         shape: RoundedRectangleBorder(
@@ -250,7 +222,7 @@ class _AuthScreenState extends State<AuthScreen> {
       children: [
         Text(
           isLoginMode ? "Don't have an account? " : "Already have an account? ",
-          style: const TextStyle(color: Colors.grey, fontSize: 13),
+          style: const TextStyle(color: AppTheme.textGrey, fontSize: 13),
         ),
         GestureDetector(
           onTap: () {
@@ -266,7 +238,7 @@ class _AuthScreenState extends State<AuthScreen> {
           child: Text(
             isLoginMode ? 'Register' : 'Login',
             style: const TextStyle(
-              color: Color(0xFFC9A84C),
+              color: AppTheme.gold,
               fontWeight: FontWeight.bold,
               fontSize: 13,
             ),
